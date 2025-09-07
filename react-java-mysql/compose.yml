@@ -1,0 +1,46 @@
+services:
+  frontend:
+    image: localhost:5000/frontend-image
+    build: frontend
+    ports:
+      - 80:80
+    restart: always
+    networks:
+      - react-spring
+
+  db:
+    image: mysql:8.0.19
+    environment:
+      - MYSQL_DATABASE=example
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password
+    restart: always
+    secrets: 
+      - db-password
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - spring-mysql
+
+  backend:
+    image: localhost:5000/backend-image
+    build: backend
+    ports:
+      - 8080:8080
+    restart: always
+    networks:
+      - react-spring
+      - spring-mysql
+    depends_on:
+    - db
+
+volumes:
+  db-data: {}
+
+secrets:
+  db-password:
+    file: ./db/password.txt
+
+networks:
+  react-spring: {}
+  spring-mysql: {}
+

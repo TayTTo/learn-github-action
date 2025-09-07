@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: frontend
+  name: frontend
+spec:
+  ports:
+  - name: 3000-3000
+    port: 3000
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: frontend
+  type: NodePort
+status:
+  loadBalancer: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: frontend
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - image: taytoto/frontend-image:latest
+          name: frontend
+          resources: {}
+status: {}
