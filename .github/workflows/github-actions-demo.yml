@@ -15,7 +15,6 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
-          docker compose build
       - name: Build and push docker image to docker hub
         working-directory: ../../react-java-mysql/
         run: |
